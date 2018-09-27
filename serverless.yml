@@ -1,0 +1,38 @@
+service: redhat-todo
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  environment:
+    TODO_TABLE:
+      Ref: TodosTable
+  deploymentBucket:
+    name: redhat-todo-${self:provider.stage}-serverless
+  stage: ${opt:stage, "dev"}
+  region: ${opt:region, "us-east-2"}
+  endpointType: regional
+  role:
+    Fn::GetAtt:
+    - TodosTableLambdaAccess
+    - Arn
+
+package:
+  individually: true
+
+functions:
+  addTodo:
+    handler: index.handler
+    package:
+      artifact: ./artifacts/add-todo.zip
+    events:
+      - http:
+          path: todos
+          method: post
+          integration: lambda-proxy
+          authorizer: aws_iam
+
+resources:
+  - ${file(resources/dynamodb.yml)}
+  - ${file(resources/cognito.yml)}
+    
+

@@ -1,0 +1,31 @@
+{
+  "name": "redhat-todos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "lint": "npx eslint \"**/index.js\"",
+    "webpack": "npx webpack --config webpack.config.js",
+    "package": "npm run webpack && npx sls package -s dev",
+    "deploy": "npm run webpack && npx sls deploy -s dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.11",
+    "@types/node": "^10.7.0",
+    "archiver": "^2.1.1",
+    "eslint": "^5.4.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "glob": "^7.1.2",
+    "serverless": "^1.30.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.300.0",
+    "uuid-v4": "^0.1.0"
+  }
+}

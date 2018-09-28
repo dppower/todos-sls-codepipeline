@@ -56,11 +56,19 @@ aws cognito-identity get-credentials-for-identity --identity-id $IdentityId  --l
 
 ### API endpoints
   
-GET /todos Returns all todos for user
-GET /todos?todoId=<NUMBER> Return a specific todo
-GET /todos?todoId=<NUMBER>&next=<TRUE> Returns the next page of todos beginning from specified todo
-
-POST /todos Creates a new todo
-POST /todos?todoId=<NUMBER> Modifies the specified todo
-
-DELETE /todos?todoId=<NUMBER> Deletes the specified todo
+GET /todos  
+Returns all todos for user 
+   
+GET /todos?todoId={number}  
+Returns a specific todo 
+   
+GET /todos?todoId={number}&next={true}  
+Returns the next page of todos beginning from specified todo  
+  
+POST /todos  
+Creates a new todo 
+   
+POST /todos?todoId={number}  
+Modifies the specified todo  
+  
+DELETE /todos?todoId={number} Deletes the specified todo  

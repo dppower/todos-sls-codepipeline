@@ -12,11 +12,11 @@ npm run deploy
 #2 Create a github repo and enable 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens
 #3 Deploy
 aws cloudformation deploy --template-file .\code-pipeline/code-pipeline.yml --stack-name TodosAppPipeline `  
-    --parameter-overrides ApplicationName="TodosApp" ArtifactBucket="<bucket name created in step 1>" `  
+    --parameter-overrides ApplicationName="TodosApp" ArtifactS3Bucket="<bucket name created in step 1>" `  
     GitHubOAuthToken="<token obtained in step 2>" GitHubUser="<user name of github repo owner>" `  
     GitHubRepository="<name of repo>" GitHubBranch="<branch in repo>" `  
     Email="<an email to receive notifications>" `
-    --capabilities CAPABILITY_IAM
+    --capabilities CAPABILITY_NAMED_IAM
 #4 Commit changes
 ```
 

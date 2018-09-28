@@ -181,13 +181,7 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents
             - Effect: Allow
-              Resource: !Sub 'arn:aws:s3:::${ArtifactS3Bucket}/${ApplicationName}/*'
-              Action: 
-              - s3:GetObject
-              - s3:GetObjectVersion
-              - s3:PutObject
-            - Effect: Allow
-              Resource: !Sub 'arn:aws:s3:::*'
+              Resource: !Sub 'arn:aws:s3:::${ArtifactS3Bucket}*'
               Action: 
               - s3:*
 

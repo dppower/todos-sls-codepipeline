@@ -9,6 +9,8 @@ provider:
   stage: ${opt:stage, "dev"}
   region: ${opt:region, "us-east-2"}
   endpointType: regional
+  deploymentBucket:
+    name: todos-serverless-pipeline-artifacts
   role:
     Fn::GetAtt:
     - TodosTableLambdaAccess

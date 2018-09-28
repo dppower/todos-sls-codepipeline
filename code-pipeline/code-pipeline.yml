@@ -181,9 +181,13 @@ Resources:
               - logs:CreateLogStream
               - logs:PutLogEvents
             - Effect: Allow
-              Resource: !Sub 'arn:aws:s3:::${ArtifactS3Bucket}*'
+              Resource: 
+              - !Sub 'arn:aws:s3:::${ArtifactS3Bucket}'
+              - !Sub 'arn:aws:s3:::${ArtifactS3Bucket}/*'
               Action: 
-              - s3:*
+              - s3:PutObject
+              - s3:Get*
+              - s3:List*
 
   CFNServiceRole:
     Type: AWS::IAM::Role

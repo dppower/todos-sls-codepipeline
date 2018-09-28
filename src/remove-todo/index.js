@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
   const todoId = event.queryStringParameters && +event.queryStringParameters.todoId;
 
   if (!todoId) {
-    return response.fail(400, )
+    return response.fail(400, 'Must include a todoId <NUMBER> as query parameter');
   }
 
   try {

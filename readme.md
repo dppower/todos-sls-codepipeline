@@ -9,6 +9,11 @@ npm run deploy
 
 ``` powershell
 #1 Create a s3 bucket and enable versioning
+#2 Add the following to serverless.yml
+provider:
+    ###...
+    deploymentBucket:
+        name: <bucket name>
 #2 Create a github repo and enable 'repo' and 'admin:repo_hook' permissions here https://github.com/settings/tokens
 #3 Deploy
 aws cloudformation deploy --template-file .\code-pipeline/code-pipeline.yml --stack-name TodosAppPipeline `  
@@ -48,3 +53,14 @@ $IdentityId = aws cognito-identity get-id --identity-pool-id $IdentityPool --log
 
 aws cognito-identity get-credentials-for-identity --identity-id $IdentityId  --logins $login
 ```
+
+### API endpoints
+  
+GET /todos Returns all todos for user
+GET /todos?todoId=<NUMBER> Return a specific todo
+GET /todos?todoId=<NUMBER>&next=<TRUE> Returns the next page of todos beginning from specified todo
+
+POST /todos Creates a new todo
+POST /todos?todoId=<NUMBER> Modifies the specified todo
+
+DELETE /todos?todoId=<NUMBER> Deletes the specified todo

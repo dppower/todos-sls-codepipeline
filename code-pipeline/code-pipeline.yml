@@ -91,46 +91,7 @@ Resources:
             Provider: Manual
           Configuration:
             NotificationArn: !Ref CodePipelineSNSTopic
-            CustomData: 'Do you want to approve test stack and create a change set against the production stack?'
-      - Name: ProductionStack
-        Actions:
-        - Name: CreateChangeSet
-          RunOrder: 1
-          ActionTypeId:
-            Category: Deploy
-            Owner: AWS
-            Provider: CloudFormation
-            Version: '1'
-          InputArtifacts:
-          - Name: Build
-          Configuration:
-            ActionMode: CHANGE_SET_REPLACE
-            RoleArn: !GetAtt CFNServiceRole.Arn
-            StackName: !Sub ${ApplicationName}-production
-            ChangeSetName: !Sub ${ApplicationName}-production-change-set
-            TemplatePath: !Sub 'Build::serverless-stack.json'         
-        - Name: ApproveChangeSet
-          RunOrder: 2
-          ActionTypeId:
-            Category: Approval
-            Owner: AWS
-            Provider: Manual
-            Version: '1'
-          Configuration:
-            NotificationArn: !Ref CodePipelineSNSTopic
-            CustomData: !Sub 'A new change set was created for the ${ApplicationName} production stack. Do you want to implement the changes?'
-        - Name: ExecuteChangeSet
-          RunOrder: 3
-          ActionTypeId:
-            Category: Deploy
-            Owner: AWS
-            Provider: CloudFormation
-            Version: '1'
-          Configuration:
-            ActionMode: CHANGE_SET_EXECUTE
-            ChangeSetName: !Sub ${ApplicationName}-production-change-set
-            RoleArn: !GetAtt CFNServiceRole.Arn
-            StackName: !Sub ${ApplicationName}-production
+            CustomData: 'Do you want to approve test stack?'
 
   CodePipelineSNSTopic:
     Type: AWS::SNS::Topic
@@ -295,6 +256,11 @@ Resources:
             - codebuild:StartBuild
             Resource: '*'
             Effect: Allow
+          - Action:
+            - sns:*
+            Effect: Allow
+            Resource:
+            - !Ref CodePipelineSNSTopic
 
 Outputs:
   CodePipelineURL:

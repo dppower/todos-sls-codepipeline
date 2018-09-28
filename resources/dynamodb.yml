@@ -2,12 +2,12 @@ Resources:
   TodosTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:service}-${self:provider.stage}-Todos
+      TableName: ${self:service}-${self:provider.stage}-TodosTable
       AttributeDefinitions:
       - AttributeName: userId
         AttributeType: S
       - AttributeName: todoId
-        AttributeType: S
+        AttributeType: N
       KeySchema:
       - AttributeName: userId
         KeyType: HASH
@@ -39,17 +39,17 @@ Resources:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents          
-            Resource: "arn:aws:logs:*:*:*"
+            Resource: arn:aws:logs:*:*:*
           - Effect: Allow
             Action:
             - dynamodb:*
             Resource:
-            - "Fn::Join":
-              - ""
-              - - "arn:aws:dynamodb:"
-                - Ref: "AWS::Region"
-                - ":"
-                - Ref: "AWS::AccountId"
-                - ":table/"
+            - Fn::Join:
+              - ''
+              - - 'arn:aws:dynamodb:'
+                - Ref: AWS::Region
+                - ':'
+                - Ref: AWS::AccountId
+                - ':table/'
                 - Ref: TodosTable
-                - "*"
+                - '*'

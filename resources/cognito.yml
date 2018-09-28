@@ -39,7 +39,7 @@ Resources:
         - ClientId:
             Ref: CognitoUserPoolClient
           ProviderName:
-            Fn::GetAtt: [ "CognitoUserPool", "ProviderName" ]
+            Fn::GetAtt: [ CognitoUserPool, ProviderName ]
   
   IdentityPoolRoles:
     Type: AWS::Cognito::IdentityPoolRoleAttachment
@@ -56,58 +56,58 @@ Resources:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
         - Effect: Allow
           Principal:
-            Federated: "cognito-identity.amazonaws.com"
+            Federated: cognito-identity.amazonaws.com
           Action:
           - sts:AssumeRoleWithWebIdentity
           Condition:
             StringEquals:
-              "cognito-identity.amazonaws.com:aud": 
+              cognito-identity.amazonaws.com:aud: 
                 Ref: IdentityPool
             ForAnyValue:StringLike:
-              "cognito-identity.amazonaws.com:amr": "unauthenticated"
+              cognito-identity.amazonaws.com:amr: unauthenticated
       Policies:
       - PolicyName: base
         PolicyDocument:         
-          Version: "2012-10-17"
+          Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Action:
               - cognito-sync:*
               Resource:
-              - "*"
+              - '*'
 
   AuthenticatedRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
-        Version: "2012-10-17"
+        Version: '2012-10-17'
         Statement:
         - Effect: Allow
           Principal:
-            Federated: "cognito-identity.amazonaws.com"
+            Federated: cognito-identity.amazonaws.com
           Action: 
           - sts:AssumeRoleWithWebIdentity
           Condition:
             StringEquals:
-              "cognito-identity.amazonaws.com:aud": 
+              cognito-identity.amazonaws.com:aud: 
                 Ref: IdentityPool
             ForAnyValue:StringLike:
-              "cognito-identity.amazonaws.com:amr": "authenticated"
+              cognito-identity.amazonaws.com:amr: authenticated
       Policies:
       - PolicyName: base
         PolicyDocument: 
-          Version: "2012-10-17"
+          Version: '2012-10-17'
           Statement:
           - Effect: Allow
             Action:
             - cognito-sync:*
             - cognito-identity:*
             Resource:
-            - "*"
+            - '*'
           - Effect: Allow
             Action:
             - execute-api:Invoke
@@ -121,3 +121,14 @@ Resources:
                 - ':'
                 - Ref: ApiGatewayRestApi
                 - '/*'
+
+Outputs:
+  UserPoolId:
+    Value: 
+      Ref: CognitoUserPool
+  AppClientId:
+    Value: 
+      Ref: CognitoUserPoolClient
+  IdentityPoolId:
+    Value: 
+      Ref: IdentityPool

@@ -1,13 +1,11 @@
-service: redhat-todo
+service: TodosApp
 
 provider:
   name: aws
   runtime: nodejs8.10
   environment:
-    TODO_TABLE:
+    TodosTable:
       Ref: TodosTable
-  deploymentBucket:
-    name: redhat-todo-${self:provider.stage}-serverless
   stage: ${opt:stage, "dev"}
   region: ${opt:region, "us-east-2"}
   endpointType: regional
@@ -28,6 +26,26 @@ functions:
       - http:
           path: todos
           method: post
+          integration: lambda-proxy
+          authorizer: aws_iam
+  getTodos:
+    handler: index.handler
+    package:
+      artifact: ./artifacts/get-todos.zip
+    events:
+      - http:
+          path: todos
+          method: get
+          integration: lambda-proxy
+          authorizer: aws_iam
+  removeTodo:
+    handler: index.handler
+    package:
+      artifact: ./artifacts/remove-todo.zip
+    events:
+      - http:
+          path: todos
+          method: delete
           integration: lambda-proxy
           authorizer: aws_iam
 
